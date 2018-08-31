@@ -34,3 +34,10 @@ A user needs to be able to monitor electricity and water usage over a simulated 
 Estimate: 2 days.
 
 -------------------------
+
+(TODO)
+A user needs to be able to change the simulated house configuration by editing a configuration file.
+
+Estimate: 3 days.
+
+-------------------------
