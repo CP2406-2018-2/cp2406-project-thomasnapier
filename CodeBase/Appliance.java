@@ -7,9 +7,14 @@ public class Appliance {
         isOn = false;
     }
 
+    public Appliance(String name){
+        this.name = name;
+        isOn = false;
+    }
+
     public Appliance(String name, boolean on){
         this.name = name;
-        isOn = on;
+        this.isOn = on;
     }
 
     public String getName() {

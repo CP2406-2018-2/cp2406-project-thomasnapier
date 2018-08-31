@@ -7,9 +7,14 @@ public class Fixture {
         isOn = false;
     }
 
+    public Fixture(String name){
+        this.name = name;
+        isOn = false;
+    }
+
     public Fixture(String name, boolean on){
         this.name = name;
-        isOn = on;
+        this.isOn = on;
     }
 
     public String getName() {
