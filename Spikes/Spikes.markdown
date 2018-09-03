@@ -1,4 +1,4 @@
-(TODO)
+(DONE)
 A user needs to be able to track the amount of sunlight hitting the house so that they can properly audit their sun sensitive appliances/fixtures.
 
 Estimate: 3 hours
