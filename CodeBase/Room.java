@@ -2,7 +2,9 @@ public class Room {
     private String roomName;
     private Fixture[] fixtures = {};
     private Appliance[] appliances = {};
-
+    private int temperature;
+    private int sunlight;
+    private int time;
 
     public Room(String roomName){
         this.roomName = roomName;
@@ -39,6 +41,23 @@ public class Room {
     public void setRoomName(String name){
         roomName = name;
     }
+
+    public void setSunlight(int sunlight) {
+        this.sunlight = sunlight;
+    }
+
+    public int getSunlight() {
+        return sunlight;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public void setTemperature(int temperature) {
+        this.temperature = temperature;
+    }
+
 
 }
 
