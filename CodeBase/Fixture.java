@@ -48,14 +48,36 @@ public class Fixture {
     }
 
     public String getState(){
-        String status;
-        if(isOn){
-            status = "on";
+        String status = "";
+        if(this.temperatureCutOff > 0){
+            if(this.temperature >= this.temperatureCutOff){
+                isOn = true;
+                status = this.name + " is on";
+            }
+        }
+        if(this.timeCutOff > 0){
+            if(this.time >= this.timeCutOff){
+                isOn = true;
+                status = this.name + " is on";
+            }
+        }
+        if(this.lightCutOff > 0){
+            if(this.sunlight >= this.lightCutOff){
+                isOn = true;
+                status = this.name + " is on";
+            }
         }
         else{
-            status = "off";
+            isOn = false;
         }
         return status;
+//        if(isOn){
+//            status = "on";
+//        }
+//        else{
+//            status = "off";
+//        }
+//        return status;
     }
 
     public void setName(String name) {
@@ -64,6 +86,18 @@ public class Fixture {
 
     public void setState(boolean on) {
         isOn = on;
+    }
+
+    public void setTime(int time){
+        this.time = time;
+    }
+
+    public void setTemperature(int temperature){
+        this.temperature = temperature;
+    }
+
+    public void setSunlight(int sunlight){
+        this.sunlight = sunlight;
     }
 
 }

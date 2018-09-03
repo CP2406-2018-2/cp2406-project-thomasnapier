@@ -17,7 +17,7 @@ public class Simulator {
         int minutes = 0;
         final int HEATING_RATE = 16;
         final int COOLING_RATE = 44;
-        final int SIMULATOR_DELAY = 10;
+        final int SIMULATOR_DELAY = 100;
 
         String mainMenu = "Please select an option: " +
                 "\n[1] Start Simulator" +
@@ -38,7 +38,7 @@ public class Simulator {
         }
 
         //create fixture and appliance objects for each room
-        Fixture[] kitchenFixtures = {new Fixture("Room Lights", false),
+        Fixture[] kitchenFixtures = {new Fixture("Room Light", false),
                 new Fixture("Room Ceiling Fan", 25),
                 new Fixture("Motion Sensor"),
                 new Fixture("Room Aircon", 30)};
@@ -46,19 +46,19 @@ public class Simulator {
                 new Appliance("Microwave"),
                 new Appliance("Hot Water Jug"),
                 new Appliance("Oven")};
-        Fixture[] livingRoomFixtures = {new Fixture("Room Lights", false),
+        Fixture[] livingRoomFixtures = {new Fixture("Room Light", false),
                 new Fixture("Room Ceiling Fan", 25),
                 new Fixture("Room Aircon", 35),
                 new Fixture("Motion Sensor")};
         Appliance[] livingRoomAppliances = {new Appliance("TV")};
-        Fixture[] bathroomFixtures = {new Fixture("Room Lights", false),
+        Fixture[] bathroomFixtures = {new Fixture("Room Light", false),
                 new Fixture("Motion Sensor")};
-        Fixture[] bedroomFixtures = {new Fixture("Room Lights", false),
+        Fixture[] bedroomFixtures = {new Fixture("Room Light", false),
                 new Fixture("Motion Sensor")};
-        Fixture[] gardenFixtures = {new Fixture("Room Lights", false),
+        Fixture[] gardenFixtures = {new Fixture("Room Light", false),
                 new Fixture("Motion Sensor"),
-                new Fixture("Sprinklers", 35, 720)};
-        Fixture[] garageFixtures = {new Fixture("Room Lights", false),
+                new Fixture("Sprinkler", 35)};
+        Fixture[] garageFixtures = {new Fixture("Room Light", false),
                 new Fixture("Motion Sensor"),
                 new Fixture("Garage Door", false)};
         Appliance[] garageAppliances = {new Appliance("Car")};
@@ -138,8 +138,10 @@ public class Simulator {
                 for (int i = 0; i < rooms.length; i++) {
                     rooms[i].setTime(currentTime); //send time value to Room class
                     rooms[i].setTemperature(currentTemperature);
+                    rooms[i].setRoomDevices();
                 }
                 currentTime++;
+                House.displayStates(rooms);
                 Thread.sleep(SIMULATOR_DELAY); //1 minute of simulated time = 1 second real time
             }
         }

@@ -58,6 +58,19 @@ public class Room {
         this.temperature = temperature;
     }
 
+    public void setRoomDevices(){
+        for (int i = 0; i < fixtures.length; i++) {
+            fixtures[i].setTime(this.time);
+            fixtures[i].setSunlight(this.sunlight);
+            fixtures[i].setTemperature(this.temperature);
+        }
+        for (int i = 0; i < appliances.length; i++) {
+            appliances[i].setTime(this.time);
+            appliances[i].setSunlight(this.sunlight);
+            appliances[i].setTemperature(this.temperature);
+        }
+    }
+
 
 }
 

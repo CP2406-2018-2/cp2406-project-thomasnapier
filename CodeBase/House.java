@@ -46,4 +46,29 @@ public class House {
             System.out.println("-------------------------");
         }
     }
+
+    public static void displayStates(Room[] rooms){
+        for (int i = 0; i < rooms.length; i++){
+            Fixture[] fixtures = rooms[i].getRoomFixtures();
+            Appliance[] appliances = rooms[i].getRoomAppliances();
+            for (int j = 0; j < appliances.length; j++) {
+                if(appliances[j].getState().equals("")){
+
+                }
+                else{
+                    System.out.println("=======================");
+                    System.out.println("" + appliances[j].getState());
+                }
+            }
+            for (int j = 0; j < fixtures.length; j++) {
+                if(fixtures[j].getState().equals("")){
+
+                }
+                else{
+                    System.out.println("" + fixtures[j].getState());
+                    System.out.println("=======================");
+                }
+            }
+        }
+    }
 }

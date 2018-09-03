@@ -48,12 +48,27 @@ public class Appliance {
     }
 
     public String getState(){
-        String status;
-        if(isOn){
-            status = "on";
+        String status = "";
+        if(this.temperatureCutOff > 0){
+            if(this.temperature >= this.temperatureCutOff){
+                isOn = true;
+                status = this.name + " is on";
+            }
+        }
+        if(this.timeCutOff > 0){
+            if(this.time >= this.timeCutOff){
+                isOn = true;
+                status = this.name + " is on";
+            }
+        }
+        if(this.lightCutOff > 0){
+            if(this.sunlight >= this.lightCutOff){
+                isOn = true;
+                status = this.name + " is on";
+            }
         }
         else{
-            status = "off";
+            isOn = false;
         }
         return status;
     }
@@ -66,5 +81,15 @@ public class Appliance {
         isOn = on;
     }
 
+    public void setTime(int time){
+        this.time = time;
+    }
 
+    public void setTemperature(int temperature){
+        this.temperature = temperature;
+    }
+
+    public void setSunlight(int sunlight) {
+        this.sunlight = sunlight;
+    }
 }
