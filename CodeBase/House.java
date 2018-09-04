@@ -36,13 +36,27 @@ public class House {
             Appliance[] appliances = rooms[i].getRoomAppliances();
             System.out.println("The contents of the " + rooms[i].getRoomName() + " are:");
             System.out.println("Appliances: ");
+            StringBuilder appString = new StringBuilder();
             for (int j = 0; j < appliances.length; j++) {
-                System.out.println(appliances[j].getName());
+                if(j == 0){
+                    appString.append(appliances[j].getName());
+                }
+                else{
+                    appString.append(", ").append(appliances[j].getName());
+                }
             }
+            System.out.println(appString);
             System.out.println("\nFixtures: ");
+            StringBuilder fixString = new StringBuilder();
             for (int j = 0; j < fixtures.length; j++) {
-                System.out.println(fixtures[j].getName());
+                if(j == 0){
+                    fixString.append(fixtures[j].getName());
+                }
+                else{
+                    fixString.append(", ").append(fixtures[j].getName());
+                }
             }
+            System.out.println(fixString);
             System.out.println("-------------------------");
         }
     }

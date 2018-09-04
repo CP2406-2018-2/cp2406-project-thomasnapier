@@ -92,4 +92,28 @@ public class Appliance {
     public void setSunlight(int sunlight) {
         this.sunlight = sunlight;
     }
+
+    public int getSunlight(){
+        return sunlight;
+    }
+
+    public int getTime(){
+        return time;
+    }
+
+    public int getTemperature(){
+        return temperature;
+    }
+
+    public int getTemperatureCutOff(){
+        return temperatureCutOff;
+    }
+
+    public int getTimeCutOff(){
+        return timeCutOff;
+    }
+
+    public int getLightCutOff(){
+        return lightCutOff;
+    }
 }

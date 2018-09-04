@@ -71,13 +71,6 @@ public class Fixture {
             isOn = false;
         }
         return status;
-//        if(isOn){
-//            status = "on";
-//        }
-//        else{
-//            status = "off";
-//        }
-//        return status;
     }
 
     public void setName(String name) {
@@ -98,6 +91,30 @@ public class Fixture {
 
     public void setSunlight(int sunlight){
         this.sunlight = sunlight;
+    }
+
+    public int getSunlight(){
+        return sunlight;
+    }
+
+    public int getTime(){
+        return time;
+    }
+
+    public int getTemperature(){
+        return temperature;
+    }
+
+    public int getTemperatureCutOff(){
+        return temperatureCutOff;
+    }
+
+    public int getTimeCutOff(){
+        return timeCutOff;
+    }
+
+    public int getLightCutOff(){
+        return lightCutOff;
     }
 
 }
