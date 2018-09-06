@@ -1,0 +1,5 @@
+LivingRoom,Fixture,MotionSensor,Light,Appliance,Aircond,Fan,TV
+BedRoom,Fixture,MotionSensor,Light,Appliance,Aircond,Fan
+Kitchen,Fixture,MotionSensor,Light,Appliance,Microwave,HotWaterJug,CoffeeMachine
+Garage,Fixture,MotionSensor,Light,GarageDoor,Appliance,Car
+Garden,Fixture,MotionSensor,Light,Sprinklers

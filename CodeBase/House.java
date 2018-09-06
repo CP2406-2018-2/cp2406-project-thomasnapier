@@ -2,6 +2,9 @@ public class House {
     private int temperature;
     private int sunlight;
     private int time;
+    private double total;
+    private double electricityTotal;
+    private double waterTotal;
 
 
     public House(){
@@ -31,17 +34,16 @@ public class House {
 
     //display contents for each room in the house
     public static void displayContents(Room[] rooms){
-        for (int i = 0; i < rooms.length; i++){
-            Fixture[] fixtures = rooms[i].getRoomFixtures();
-            Appliance[] appliances = rooms[i].getRoomAppliances();
-            System.out.println("The contents of the " + rooms[i].getRoomName() + " are:");
+        for (Room room : rooms) {
+            Fixture[] fixtures = room.getRoomFixtures();
+            Appliance[] appliances = room.getRoomAppliances();
+            System.out.println("The contents of the " + room.getRoomName() + " are:");
             System.out.println("Appliances: ");
             StringBuilder appString = new StringBuilder();
             for (int j = 0; j < appliances.length; j++) {
-                if(j == 0){
+                if (j == 0) {
                     appString.append(appliances[j].getName());
-                }
-                else{
+                } else {
                     appString.append(", ").append(appliances[j].getName());
                 }
             }
@@ -49,10 +51,9 @@ public class House {
             System.out.println("\nFixtures: ");
             StringBuilder fixString = new StringBuilder();
             for (int j = 0; j < fixtures.length; j++) {
-                if(j == 0){
+                if (j == 0) {
                     fixString.append(fixtures[j].getName());
-                }
-                else{
+                } else {
                     fixString.append(", ").append(fixtures[j].getName());
                 }
             }
@@ -62,27 +63,52 @@ public class House {
     }
 
     public static void displayStates(Room[] rooms){
-        for (int i = 0; i < rooms.length; i++){
-            Fixture[] fixtures = rooms[i].getRoomFixtures();
-            Appliance[] appliances = rooms[i].getRoomAppliances();
-            for (int j = 0; j < appliances.length; j++) {
-                if(appliances[j].getState().equals("")){
-
-                }
-                else{
-                    System.out.println("=======================");
-                    System.out.println("" + appliances[j].getState());
+        for (Room room : rooms) {
+            Fixture[] fixtures = room.getRoomFixtures();
+            Appliance[] appliances = room.getRoomAppliances();
+            for (Appliance appliance : appliances) {
+                if (appliance.getState().equals("")) {
+                } else {
+                    System.out.print(" **" + appliance.getState() + "** ");
+                    appliance.calculateEnergyUsage();
+                    appliance.calculateWaterUsage();
                 }
             }
-            for (int j = 0; j < fixtures.length; j++) {
-                if(fixtures[j].getState().equals("")){
-
-                }
-                else{
-                    System.out.println("" + fixtures[j].getState());
-                    System.out.println("=======================");
+            for (Fixture fixture : fixtures) {
+                if (fixture.getState().equals("")) {
+                } else {
+                    System.out.print(" **" + fixture.getState() + "** ");
+                    fixture.calculateEnergyUsage();
+                    fixture.calculateWaterUsage();
                 }
             }
         }
+    }
+
+    public void calculateCosts(Room[] rooms, double electricityCost, double waterCost){
+        for (Room room : rooms) {
+            Fixture[] fixtures = room.getRoomFixtures();
+            Appliance[] appliances = room.getRoomAppliances();
+            for (Appliance appliance : appliances) {
+                if (appliance.getState().equals("")) {
+                } else {
+                    this.electricityTotal += electricityCost * appliance.calculateEnergyUsage();
+                    this.waterTotal += waterCost * appliance.calculateWaterUsage();
+                }
+            }
+            for (Fixture fixture : fixtures) {
+                if (fixture.getState().equals("")) {
+                } else {
+                    this.electricityTotal += electricityCost * fixture.calculateEnergyUsage();
+                    this.waterTotal += waterCost * fixture.calculateWaterUsage();
+                }
+            }
+        }
+    }
+
+    public void displayTotals(){
+        this.total = this.electricityTotal + this.waterTotal;
+        System.out.println("\n\nThe total cost for all appliances throughout the day was $" + (int) this.total + ", consisting of $"
+                + (int) this.electricityTotal + " from electricity and $" + (int) this.waterTotal + " from water");
     }
 }

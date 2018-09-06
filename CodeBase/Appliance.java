@@ -7,7 +7,10 @@ public class Appliance {
     private int temperatureCutOff;
     private int timeCutOff;
     private int lightCutOff;
-    private boolean motionActive;
+    private double energyUsage;
+    private double waterUsage;
+    private double totalEnergyUsage = 0;
+    private double totalWaterUsage = 0;
 
     public Appliance(){
         name = " ";
@@ -24,11 +27,6 @@ public class Appliance {
         this.temperatureCutOff = temperatureCutOff;
     }
 
-    public Appliance(String name, boolean motionActive){
-        this.name = name;
-        this.motionActive = motionActive;
-    }
-
     public Appliance(String name, int temperatureCutOff, int timeCutOff){
         this.name = name;
         this.temperatureCutOff = temperatureCutOff;
@@ -41,6 +39,16 @@ public class Appliance {
         this.temperatureCutOff = temperatureCutOff;
         this.timeCutOff = timeCutOff;
         this.lightCutOff = lightCutOff;
+    }
+
+    public Appliance(String name, int temperatureCutOff, int timeCutOff, int lightCutOff, double water, double energy){
+        this.name = name;
+        isOn = false;
+        this.temperatureCutOff = temperatureCutOff;
+        this.timeCutOff = timeCutOff;
+        this.lightCutOff = lightCutOff;
+        this.waterUsage = water;
+        this.energyUsage = energy;
     }
 
     public String getName() {
@@ -115,5 +123,31 @@ public class Appliance {
 
     public int getLightCutOff(){
         return lightCutOff;
+    }
+
+    public void setEnergyUsage(double energy){
+        this.energyUsage = energy;
+    }
+
+    public void setWaterUsage(double water){
+        this.waterUsage = water;
+    }
+
+    public double getEnergyUsage(){
+        return this.energyUsage;
+    }
+
+    public double getWaterUsage(){
+        return this.waterUsage;
+    }
+
+    public double calculateEnergyUsage(){
+        this.totalEnergyUsage += this.energyUsage;
+        return this.totalEnergyUsage;
+    }
+
+    public double calculateWaterUsage(){
+        this.totalWaterUsage += this.waterUsage;
+        return this.totalWaterUsage;
     }
 }
