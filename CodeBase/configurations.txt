@@ -1,0 +1,16 @@
+LivingRoom
+BedRoom
+Kitchen
+Garage
+Garden
+
+MotionSensor,Light
+MotionSensor,Light
+MotionSensor,Light
+MotionSensor,Light,GarageDoor
+MotionSensor,Light,Sprinklers
+
+Aircond,Fan,TV
+Aircond,Fan
+Microwave,HotWaterJug,CoffeeMachine
+Car

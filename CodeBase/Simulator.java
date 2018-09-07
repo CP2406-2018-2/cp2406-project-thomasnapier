@@ -1,4 +1,7 @@
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 public class Simulator {
 
     public static void main(String[] args) throws InterruptedException {
@@ -34,7 +37,7 @@ public class Simulator {
                 new Fixture("Kitchen Room Ceiling Fan", 25, 0, 0, 0, 0.075),
                 new Fixture("Kitchen Motion Sensor",0, 0, 0, 0, 0.02),
                 new Fixture("Kitchen Room Aircon", 30, 0, 0, 0, 3.5)};
-        Appliance[] kitchenAppliances = {new Appliance("Coffee Machine", 0, 0, 0, 0, 0.03),
+        Appliance[] kitchenAppliances = {new Appliance("Coffee Machine", 0, 0, 0, 0.5, 0.03),
                 new Appliance("Microwave", 0,0,0,0,0.1),
                 new Appliance("Hot Water Jug", 0, 0, 0, 1, 0.075),
                 new Appliance("Oven", 0,0,0,0,0)};
@@ -62,6 +65,33 @@ public class Simulator {
                 new Room("Bedroom", bedroomFixtures),
                 new Room("Garden", gardenFixtures),
                 new Room("Garage", garageFixtures, garageAppliances)};
+
+        //read rooms, fixtures and values from config file **only partially working**
+//        BufferedReader br = null;
+//        try {
+//            String workingDir = System.getProperty("user.dir");
+//            String file = workingDir + "\\CodeBase\\configurations.txt";
+//            br = new BufferedReader(new FileReader(file));
+//            String line;
+//            int lineCount = 0;
+//            Room[] rooms = new Room[5];
+//            while ((line = br.readLine()) != null) {
+//                if(lineCount < 5){
+//                    rooms[lineCount] = new Room(line);
+//                }
+//                lineCount++;
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                if (br != null) {
+//                    br.close();
+//                }
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//            }
+//        }
 
         //create House object
         House house = new House();
@@ -159,15 +189,16 @@ public class Simulator {
                 currentTime++;
                 House.displayStates(rooms);
                 Thread.sleep(SIMULATOR_SPEED); //1 minute of simulated time = 1 second real time
+                house.calculateCosts(rooms);
             }
-            house.calculateCosts(rooms, COST_PER_KWH, COST_PER_LITRE);
-            house.displayTotals();
+            house.displayTotals(COST_PER_KWH, COST_PER_LITRE);
         }
     }
 
     private static void displayStartTests(Room[] rooms) {
         System.out.println("=============== Start of Simulation Tests ====================");
         System.out.println("Display house's rooms + attributes:\n");
+        House.displayContents(rooms);
         for (Room room : rooms) {
             System.out.println(room.getRoomName());
             System.out.println("Sunlight Before: " + room.getSunlight());
@@ -195,13 +226,30 @@ public class Simulator {
                 System.out.println("Current Temperature threshold: " + testFixtures[i].getTemperatureCutOff());
                 System.out.println("Current Time of the room the fixture is in: " + testFixtures[i].getTime());
                 System.out.println("Current Time threshold it has: " + testFixtures[i].getTimeCutOff());
+                System.out.println("Current KW/min usage: " + testFixtures[i].getEnergyUsage());
+                System.out.println("Current water litre/min usage: " + testFixtures[i].getWaterUsage());
+                System.out.println("State should display nothing: " + testFixtures[i].getState());
+                testFixtures[i].setSunlight(20);
+                System.out.println("State should display: " + testFixtures[i].getState());
+                testFixtures[i].setSunlight(0);
+                System.out.println("Calculate 5 minutes of electricity usage");
+                for (int k = 0; k < 6; k++) {
+                    System.out.println("Minute " + k + ": " + testFixtures[i].calculateEnergyUsage());
+                }
+                testFixtures[i].setEnergyUsage(0.1);
+                testFixtures[i].setWaterUsage(1);
+                System.out.println("Calculate 5 minutes of water usage");
+                for (int k = 0; k < 6; k++) {
+                    System.out.println("Minute " + k + ": " + testFixtures[i].calculateWaterUsage());
+                }
+                testFixtures[i].setWaterUsage(0);
             }
             rooms[i].setTemperature(0);
             rooms[i].setSunlight(0);
             rooms[i].setTime(0);
             rooms[i].setRoomDevices();
         }
-        System.out.println("\nDisplay an Appliance's values before simulation:\n");
+        System.out.println("\nDisplay an Appliance's values:\n");
         for (int i = 0; i < 1; i++) { //for 1 appliance in 1 room
             rooms[i].setTemperature(25);
             rooms[i].setSunlight(50);
@@ -216,6 +264,22 @@ public class Simulator {
                 System.out.println("Current Temperature threshold: " + testAppliances[i].getTemperatureCutOff());
                 System.out.println("Current Time of the room the appliance is in: " + testAppliances[i].getTime());
                 System.out.println("Current Time threshold it has: " + testAppliances[i].getTimeCutOff());
+                System.out.println("Current KW/min usage: " + testAppliances[i].getEnergyUsage());
+                System.out.println("Current water litre/min usage: " + testAppliances[i].getWaterUsage());
+                System.out.println("State should display nothing: " + testAppliances[i].getState());
+                testAppliances[i].setSunlight(20);
+                System.out.println("State should display: " + testAppliances[i].getState());
+                testAppliances[i].setSunlight(0);
+                System.out.println("Calculate 5 minutes of electricity usage");
+                for (int k = 0; k < 6; k++) {
+                    System.out.println("Minute " + k + ": " + testAppliances[i].calculateEnergyUsage());
+                }
+                testAppliances[i].setEnergyUsage(0.03);
+                System.out.println("Calculate 5 minutes of water usage");
+                for (int k = 0; k < 6; k++) {
+                    System.out.println("Minute " + k + ": " + testAppliances[i].calculateWaterUsage());
+                }
+                testAppliances[i].setWaterUsage(0.5);
             }
             rooms[i].setTemperature(0);
             rooms[i].setSunlight(0);
@@ -295,5 +359,5 @@ public class Simulator {
         randomNumber = (int)(Math.random() * range) + min;
         return randomNumber;
     }
-//
+
 }
