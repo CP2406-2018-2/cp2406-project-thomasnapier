@@ -11,7 +11,7 @@ A user needs to be able to see the status of a fixture so they can properly moni
 Estimate: 2 days
 
 ------------------------
-(TODO)
+(DONE)
 A user needs to be able to set environmental temperature thresholds on some appliances/fixtures so they can more easily control their electricity and water usage. 
 
 Estimate: 5 hours
@@ -25,7 +25,7 @@ A user needs to be able to turn specific appliances and fixtures on and off
 Estimate: 2 hours
 
 ------------------------
-(TODO)
+(BUGGY)
 A user needs to be able to set times for appliances and fixtures to automatically turn on and off.
 
 Estimate: 5 hours
