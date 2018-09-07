@@ -28,7 +28,7 @@ Estimate: 2 days.
 
 -------------------------
 
-(TODO)
+(IN PROGRESS)
 A user needs to be able to change the simulated house configuration by editing a configuration file.
 
 Estimate: 3 days.
