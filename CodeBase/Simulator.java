@@ -20,7 +20,7 @@ public class Simulator {
         int halfDays = 0;
         final int HEATING_RATE = 16;
         final int COOLING_RATE = 64;
-        final int SIMULATOR_SPEED = 10; //1000 = 1 second real = 1 min simulated, 100 = 0.1 second real = 1 min simulated0
+        final int SIMULATOR_SPEED = 1000; //1000 = 1 second real = 1 min simulated, 100 = 0.1 second real = 1 min simulated0
         int eventTemperature = 0;
         final int MAX_TEMPERATURE = 35;
         final int MIN_TEMPERATURE = 10;
@@ -59,6 +59,7 @@ public class Simulator {
         Appliance[] garageAppliances = {new Appliance("Car",0,0,0,0,1.0)};
 
         //create room objects with the corresponding room fixtures and appliances
+
         Room[] rooms = {new Room("Kitchen", kitchenFixtures, kitchenAppliances),
                 new Room("Living Room", livingRoomFixtures, livingRoomAppliances),
                 new Room("Bathroom", bathroomFixtures),
