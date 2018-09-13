@@ -6,7 +6,6 @@ public class House {
     private double electricityTotal;
     private double waterTotal;
 
-
     public House(){
         sunlight = 0;
         temperature = 0;
