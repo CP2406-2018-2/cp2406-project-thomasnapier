@@ -1,7 +1,6 @@
 import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.util.*;
+import java.io.*;
 public class Simulator {
 
     public static void main(String[] args) throws InterruptedException {
@@ -20,78 +19,70 @@ public class Simulator {
         int halfDays = 0;
         final int HEATING_RATE = 16;
         final int COOLING_RATE = 64;
-        final int SIMULATOR_SPEED = 10; //1000 = 1 second real = 1 min simulated, 100 = 0.1 second real = 1 min simulated0
+        int simulatorSpeed = 100; //1000 = 1 second real = 1 min simulated, 100 = 0.1 second real = 1 min simulated0
         int eventTemperature = 0;
         final int MAX_TEMPERATURE = 35;
         final int MIN_TEMPERATURE = 10;
         final double COST_PER_KWH = 0.25; //0.25c per minute
-        final double COST_PER_LITRE = 0.00294;
+        final double COST_PER_LITRE = 0.294;
 
         String mainMenu = "Please select an option: " +
                 "\n[1] Start Simulator" +
                 "\n[2] List House Contents" +
                 "\n[3] Quit";
 
-        //create fixture and appliance objects for each room (would come from the configuration file)
-        Fixture[] kitchenFixtures = {new Fixture("Kitchen Room Light", 0 , 0, 30,0,0.1),
-                new Fixture("Kitchen Room Ceiling Fan", 25, 0, 0, 0, 0.075),
-                new Fixture("Kitchen Motion Sensor",0, 0, 0, 0, 0.02),
-                new Fixture("Kitchen Room Aircon", 30, 0, 0, 0, 3.5)};
-        Appliance[] kitchenAppliances = {new Appliance("Coffee Machine", 0, 0, 0, 0.5, 0.03),
-                new Appliance("Microwave", 0,0,0,0,0.1),
-                new Appliance("Hot Water Jug", 0, 0, 0, 1, 0.075),
-                new Appliance("Oven", 0,0,0,0,0)};
-        Fixture[] livingRoomFixtures = {new Fixture("Living Room Light", 0 , 0, 30,0,0.1),
-                new Fixture("Living Room Ceiling Fan", 25,0,0,0,0.075),
-                new Fixture("Living Room Aircon", 35, 0, 0,0,4.5),
-                new Fixture("Motion Sensor",0,0,0,0,0.02)};
-        Appliance[] livingRoomAppliances = {new Appliance("TV",0,0,0,0,0.4)};
-        Fixture[] bathroomFixtures = {new Fixture("Bath Room Light", 0 , 0, 5,0,0.1),
-                new Fixture("Motion Sensor",0,0,0,0,0.02)};
-        Fixture[] bedroomFixtures = {new Fixture("Bed Room Light", 0 , 0, 10,0,0.1),
-                new Fixture("Motion Sensor",0,0,0,0,0.02)};
-        Fixture[] gardenFixtures = {new Fixture("Garden Light", 0 , 0, 30,0,0.1),
-                new Fixture("Motion Sensor",0,0,0,0,0.02),
-                new Fixture("Sprinkler", 35,0,0,10,0.005)};
-        Fixture[] garageFixtures = {new Fixture("Garage Room",0,0,0,0,0.01),
-                new Fixture("Motion Sensor",0,0,0,0,0.02),
-                new Fixture("Garage Door",0,0,0,0,0.02)};
-        Appliance[] garageAppliances = {new Appliance("Car",0,0,0,0,1.0)};
-
-        //create room objects with the corresponding room fixtures and appliances
-        Room[] rooms = {new Room("Kitchen", kitchenFixtures, kitchenAppliances),
-                new Room("Living Room", livingRoomFixtures, livingRoomAppliances),
-                new Room("Bathroom", bathroomFixtures),
-                new Room("Bedroom", bedroomFixtures),
-                new Room("Garden", gardenFixtures),
-                new Room("Garage", garageFixtures, garageAppliances)};
-
-        //read rooms, fixtures and values from config file **only partially working**
-//        BufferedReader br = null;
-//        try {
-//            String workingDir = System.getProperty("user.dir");
-//            String file = workingDir + "\\CodeBase\\configurations.txt";
-//            br = new BufferedReader(new FileReader(file));
-//            String line;
-//            int lineCount = 0;
-//            Room[] rooms = new Room[5];
-//            while ((line = br.readLine()) != null) {
-//                if(lineCount < 5){
-//                    rooms[lineCount] = new Room(line);
-//                }
-//                lineCount++;
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (br != null) {
-//                    br.close();
-//                }
-//            } catch (IOException ex) {
-//                ex.printStackTrace();
-//            }
-//        }
+        //load all appliance, fixtures, rooms and properties from a configuration file
+        String workingDir = System.getProperty("user.dir");
+        String file = workingDir + "\\CodeBase\\configurations.txt";
+        File inputFile = new File(file);
+        Scanner scanner = null;
+        List<Fixture> fixList = new ArrayList<>();
+        List<Appliance> appList = new ArrayList<>();
+        List<Room> roomList = new ArrayList<>();
+        String roomName = "";
+        Room[] rooms = new Room[roomList.size()];
+        try {
+            scanner = new Scanner(inputFile);
+            while(scanner.hasNextLine()){
+                String total[] = scanner.nextLine().split("/");
+                for (int i = 0; i < total.length; i++) {
+                    if(i == 0){
+                        String data[] = total[i].split(";"); //separate individual fixtures
+                        for (int j = 0; j < data.length - 1; j++) {
+                            String individual[] = data[j].split(","); //separate individual fixture values
+                            fixList.add(new Fixture(individual[0], Integer.parseInt(individual[1]),
+                                    Integer.parseInt(individual[2]), Integer.parseInt(individual[3]),
+                                    Double.parseDouble(individual[4]), Double.parseDouble(individual[5])));
+                        }
+                    }
+                    else{
+                        if(i == 1){
+                            String data[] = total[i].split(";"); //separate individual appliances
+                            for (int j = 0; j < data.length; j++) {
+                                String individual[] = data[j].split(","); //separate individual appliance values
+                                appList.add(new Appliance(individual[0], Integer.valueOf(individual[1]),
+                                        Integer.valueOf(individual[2]), Integer.valueOf(individual[3]),
+                                        Double.valueOf(individual[4]), Double.valueOf(individual[5])));
+                            }
+                        }
+                        else{
+                            roomName = total[2];
+                        }
+                    }
+                }
+                Fixture[] tempFixtures = new Fixture[fixList.size()];
+                tempFixtures = fixList.toArray(tempFixtures);
+                Appliance[] tempAppliances = new Appliance[appList.size()];
+                tempAppliances = appList.toArray(tempAppliances);
+                roomList.add(new Room(roomName, tempFixtures, tempAppliances));
+                fixList = new ArrayList<>();
+                appList = new ArrayList<>();
+            }
+            scanner.close();
+            rooms = roomList.toArray(rooms);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         //create House object
         House house = new House();
@@ -187,9 +178,9 @@ public class Simulator {
                     room.setRoomDevices();
                 }
                 currentTime++;
-                House.displayStates(rooms);
-                Thread.sleep(SIMULATOR_SPEED); //1 minute of simulated time = 1 second real time
-                house.calculateCosts(rooms);
+                house.displayStates(rooms);
+                Thread.sleep(simulatorSpeed); //1 minute of simulated time = 1 second real time
+//                house.calculateCosts(rooms);
             }
             house.displayTotals(COST_PER_KWH, COST_PER_LITRE);
         }

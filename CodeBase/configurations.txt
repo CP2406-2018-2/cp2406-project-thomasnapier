@@ -1,16 +1,6 @@
-LivingRoom
-BedRoom
-Kitchen
-Garage
-Garden
-
-MotionSensor,Light
-MotionSensor,Light
-MotionSensor,Light
-MotionSensor,Light,GarageDoor
-MotionSensor,Light,Sprinklers
-
-Aircond,Fan,TV
-Aircond,Fan
-Microwave,HotWaterJug,CoffeeMachine
-Car
+Kitchen Motion Sensor,0,0,0,0.0,0.02;Kitchen Room Light,0,0,30,0,0.1;Kitchen Room Ceiling Fan,25,0,0,0,0.075;Kitchen Room Aircon,30,0,0,0,3.5/Coffee Machine,0,0,0,0.5,0.03/Kitchen
+Living Room Light,0,0,30,0,0.1;Living Room Ceiling Fan,25,0,0,0,0.075;Living Room Aircon,35,0,0,0,4.5;Motion Sensor,0,0,0,0,0.02/TV,0,0,0,0,0.4;/Living Room
+Bath Room Light,0,0,5,0,0.1;Motion Sensor,0,0,0,0,0.02/Hair Drier,0,0,0,0.0,0.1/Bath Room
+Bed Room Light,0,0,10,0,0.1;Motion Sensor,0,0,0,0,0.02/Lamp,0,0,0,0.0,0.03/Bed Room
+Garden Light,0,0,30,0,0.1;Motion Sensor,0,0,0,0,0.02/Sprinkler,35,0,0,10,0.005/Garden
+Garage Light,0,0,0,0,0.01;Motion Sensor,0,0,0,0,0.02;Garage Door,0,0,0,0,0.02/Car,0,0,0,0,1.0/Garage

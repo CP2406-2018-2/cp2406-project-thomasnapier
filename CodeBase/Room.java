@@ -38,10 +38,6 @@ public class Room {
         return roomName;
     }
 
-    public void setRoomName(String name){
-        roomName = name;
-    }
-
     public void setSunlight(int sunlight) {
         this.sunlight = sunlight;
     }

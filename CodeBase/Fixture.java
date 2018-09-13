@@ -12,34 +12,6 @@ public class Fixture {
     private double totalEnergyUsage = 0;
     private double totalWaterUsage = 0;
 
-    public Fixture(){
-        name = " ";
-        isOn = false;
-    }
-
-    public Fixture(String name){
-        this.name = name;
-        isOn = false;
-    }
-
-    public Fixture(String name, int temperatureCutOff){
-        this.name = name;
-        this.temperatureCutOff = temperatureCutOff;
-    }
-
-    public Fixture(String name, int temperatureCutOff, int timeCutOff){
-        this.name = name;
-        this.temperatureCutOff = temperatureCutOff;
-        this.timeCutOff = timeCutOff;
-    }
-
-    public Fixture(String name, int temperatureCutOff, int timeCutOff, int lightCutOff){
-        this.name = name;
-        isOn = false;
-        this.temperatureCutOff = temperatureCutOff;
-        this.timeCutOff = timeCutOff;
-        this.lightCutOff = lightCutOff;
-    }
 
     public Fixture(String name, int temperatureCutOff, int timeCutOff, int lightCutOff, double water, double energy){
         this.name = name;
@@ -81,13 +53,6 @@ public class Fixture {
         return status;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setState(boolean on) {
-        isOn = on;
-    }
 
     public void setTime(int time){
         this.time = time;

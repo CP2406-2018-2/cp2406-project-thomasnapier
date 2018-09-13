@@ -12,35 +12,6 @@ public class Appliance {
     private double totalEnergyUsage = 0;
     private double totalWaterUsage = 0;
 
-    public Appliance(){
-        name = " ";
-        isOn = false;
-    }
-
-    public Appliance(String name){
-        this.name = name;
-        isOn = false;
-    }
-
-    public Appliance(String name, int temperatureCutOff){
-        this.name = name;
-        this.temperatureCutOff = temperatureCutOff;
-    }
-
-    public Appliance(String name, int temperatureCutOff, int timeCutOff){
-        this.name = name;
-        this.temperatureCutOff = temperatureCutOff;
-        this.timeCutOff = timeCutOff;
-    }
-
-    public Appliance(String name, int temperatureCutOff, int timeCutOff, int lightCutOff){
-        this.name = name;
-        isOn = false;
-        this.temperatureCutOff = temperatureCutOff;
-        this.timeCutOff = timeCutOff;
-        this.lightCutOff = lightCutOff;
-    }
-
     public Appliance(String name, int temperatureCutOff, int timeCutOff, int lightCutOff, double water, double energy){
         this.name = name;
         isOn = false;
@@ -69,7 +40,7 @@ public class Appliance {
                 status = this.name + " is on";
             }
         }
-        if(this.lightCutOff > 0){
+        if(this.lightCutOff < 0){
             if(this.sunlight >= this.lightCutOff){
                 isOn = true;
                 status = this.name + " is on";
@@ -79,14 +50,6 @@ public class Appliance {
             isOn = false;
         }
         return status;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setState(boolean on) {
-        isOn = on;
     }
 
     public void setTime(int time){

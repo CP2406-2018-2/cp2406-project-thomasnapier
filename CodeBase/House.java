@@ -62,7 +62,7 @@ public class House {
         }
     }
 
-    public static void displayStates(Room[] rooms){
+    public void displayStates(Room[] rooms){
         for (Room room : rooms) {
             Fixture[] fixtures = room.getRoomFixtures();
             Appliance[] appliances = room.getRoomAppliances();
@@ -70,41 +70,29 @@ public class House {
                 if (appliance.getState().equals("")) {
                 } else {
                     System.out.print(" **" + appliance.getState() + "** ");
-                    appliance.calculateEnergyUsage();
-                    appliance.calculateWaterUsage();
+                    this.electricityTotal = appliance.calculateEnergyUsage();
+                    this.waterTotal = appliance.calculateWaterUsage();
                 }
             }
             for (Fixture fixture : fixtures) {
                 if (fixture.getState().equals("")) {
                 } else {
                     System.out.print(" **" + fixture.getState() + "** ");
-                    fixture.calculateEnergyUsage();
-                    fixture.calculateWaterUsage();
+                    this.electricityTotal = fixture.calculateEnergyUsage();
+                    this.waterTotal += fixture.calculateWaterUsage();
                 }
             }
         }
     }
 
-    public void calculateCosts(Room[] rooms){
-        for (Room room : rooms) {
-            Fixture[] fixtures = room.getRoomFixtures();
-            Appliance[] appliances = room.getRoomAppliances();
-            for (Appliance appliance : appliances) {
-                this.electricityTotal = appliance.calculateEnergyUsage();
-                this.waterTotal = appliance.calculateWaterUsage();
-            }
-            for (Fixture fixture : fixtures) {
-                this.electricityTotal = fixture.calculateEnergyUsage();
-                this.waterTotal = fixture.calculateWaterUsage();
-            }
-        }
-    }
 
     public void displayTotals(double electricityCost, double waterCost){
+        int random = (int) (Math.random() * 5 + 1);
+        this.electricityTotal += random;
         this.electricityTotal *= electricityCost;
         this.waterTotal *= waterCost;
         this.total = this.electricityTotal + this.waterTotal;
-        System.out.println("\n\nThe total cost for all appliances and fixtures throughout the day was $" + (int) this.total + ", consisting of $"
-                + (int) this.electricityTotal + " from electricity and $" + (int) this.waterTotal + " from water");
+        System.out.println("\n\nThe total cost for all appliances and fixtures throughout the day was $" + (float) this.total + ", consisting of $"
+                + (float) this.electricityTotal + " from electricity and $" + (float) this.waterTotal + " from water");
     }
 }
