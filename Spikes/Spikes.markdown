@@ -21,14 +21,14 @@ Estimate: 3 days
 
 -------------------------
 
-(BUGGY)
+(DONE)
 A user needs to be able to monitor electricity and water usage over a simulated day.
 
 Estimate: 2 days.
 
 -------------------------
 
-(IN PROGRESS)
+(DONE)
 A user needs to be able to change the simulated house configuration by editing a configuration file.
 
 Estimate: 3 days.
