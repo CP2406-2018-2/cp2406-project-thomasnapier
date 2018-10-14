@@ -31,3 +31,22 @@ A user needs to be able to set times for appliances and fixtures to automaticall
 Estimate: 5 hours
 
 ------------------------
+
+(TODO) 
+A user needs to be able to see information about the simulation in the information panel
+
+Estimate: 6 hours
+
+------------------------
+
+(TODO) 
+A user needs to be able to exit the program 
+
+Estimate: 1 hour
+
+-------------------------
+
+(TODO)
+A user needs to be able to find out information about the program and a user guide
+
+Estimate: 1 hour
