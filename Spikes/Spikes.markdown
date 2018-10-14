@@ -34,3 +34,22 @@ A user needs to be able to change the simulated house configuration by editing a
 Estimate: 3 days.
 
 -------------------------
+
+(TODO)
+A user needs to be able to load a house configuration file using the menu options
+
+Estimate: 3 hours
+
+-------------------------
+
+(TODO) 
+A user needs to be able to run, pause and stop the simulation
+
+Estimate: 1 day
+
+------------------------
+
+(TODO) 
+A user needs to be able to visually see the status of devices and the room they are in
+
+Estimate: 1 day
