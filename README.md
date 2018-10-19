@@ -16,6 +16,6 @@ Consider using this readme to record and track your progress through the semeste
 12. Add additional initial spikes for part 2 (DONE) 
 13. Add additional initial UML class diagram for part 2 (DONE) 
 14. Establish initial GUI foundation (DONE)
-15. Begin implementing user stories for part 2 (IN PROGRESS) 
+15. Begin implementing user stories for part 2 (DONE) 
 16. Continue to update user stories, spikes and UML as the code base increases (IN PROGRESS) 
-17. Implement main GUI functionality (TODO) 
+17. Implement main GUI functionality (DONE) 
