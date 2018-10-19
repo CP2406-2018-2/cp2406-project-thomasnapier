@@ -5,7 +5,8 @@ public class Fixture {
     private int sunlight;
     private int time;
     private int temperatureCutOff;
-    private int timeCutOff;
+    private int lowerTimeCutOff;
+    private int upperTimeCutOff;
     private int lightCutOff;
     private double energyUsage;
     private double waterUsage;
@@ -13,11 +14,21 @@ public class Fixture {
     private double totalWaterUsage = 0;
 
 
-    public Fixture(String name, int temperatureCutOff, int timeCutOff, int lightCutOff, double water, double energy){
+    public void setTotalEnergyUsage(double totalEnergyUsage) {
+        this.totalEnergyUsage = totalEnergyUsage;
+    }
+
+    public void setTotalWaterUsage(double totalWaterUsage) {
+        this.totalWaterUsage = totalWaterUsage;
+    }
+
+
+    public Fixture(String name, int temperatureCutOff, int lowerTimeCutOff, int upperTimeCutOff, int lightCutOff, double water, double energy){
         this.name = name;
         isOn = false;
         this.temperatureCutOff = temperatureCutOff;
-        this.timeCutOff = timeCutOff;
+        this.lowerTimeCutOff = lowerTimeCutOff;
+        this.upperTimeCutOff = upperTimeCutOff;
         this.lightCutOff = lightCutOff;
         this.waterUsage = water;
         this.energyUsage = energy;
@@ -27,30 +38,35 @@ public class Fixture {
         return name;
     }
 
-    public String getState(){
-        String status = "";
+    public boolean getState(){
         if(this.temperatureCutOff > 0){
             if(this.temperature >= this.temperatureCutOff){
                 isOn = true;
-                status = this.name + " is on";
+            }
+            if(this.temperature <= this.temperatureCutOff){
+                isOn = false;
             }
         }
-        if(this.timeCutOff > 0){
-            if(this.time >= this.timeCutOff){
+        else if(this.lowerTimeCutOff > 0){
+            if(this.time >= this.lowerTimeCutOff && this.time <= this.upperTimeCutOff){
                 isOn = true;
-                status = this.name + " is on";
+            }
+            else{
+                isOn = false;
             }
         }
-        if(this.lightCutOff < 100){
+        else if(this.lightCutOff > 0){
             if(this.sunlight <= this.lightCutOff){
                 isOn = true;
-                status = this.name + " is on";
+            }
+            if(this.sunlight >= this.lightCutOff){
+                isOn = false;
             }
         }
         else{
             isOn = false;
         }
-        return status;
+        return isOn;
     }
 
 
@@ -80,10 +96,6 @@ public class Fixture {
 
     public int getTemperatureCutOff(){
         return temperatureCutOff;
-    }
-
-    public int getTimeCutOff(){
-        return timeCutOff;
     }
 
     public int getLightCutOff(){

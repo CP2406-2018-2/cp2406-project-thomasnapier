@@ -1,6 +1,6 @@
-Kitchen Motion Sensor,0,0,0,0.0,0.02;Kitchen Room Light,0,0,30,0,0.1;Kitchen Room Ceiling Fan,25,0,0,0,0.075;Kitchen Room Aircon,30,0,0,0,3.5/Coffee Machine,0,0,0,0.5,0.03/Kitchen
-Living Room Light,0,0,30,0,0.1;Living Room Ceiling Fan,25,0,0,0,0.075;Living Room Aircon,35,0,0,0,4.5;Motion Sensor,0,0,0,0,0.02/TV,0,0,0,0,0.4;/Living Room
-Bath Room Light,0,0,5,0,0.1;Motion Sensor,0,0,0,0,0.02/Hair Drier,0,0,0,0.0,0.1/Bath Room
-Bed Room Light,0,0,10,0,0.1;Motion Sensor,0,0,0,0,0.02/Lamp,0,0,0,0.0,0.03/Bed Room
-Garden Light,0,0,30,0,0.1;Motion Sensor,0,0,0,0,0.02/Sprinkler,35,0,0,10,0.005/Garden
-Garage Light,0,0,0,0,0.01;Motion Sensor,0,0,0,0,0.02;Garage Door,0,0,0,0,0.02/Car,0,0,0,0,1.0/Garage
+Room Light,0,780,1080,0,0,0.1;Motion Sensor,0,1,1439,0,0.0,0.02;Room Ceiling Fan,25,0,0,0,0,0.075;Room Aircon,30,0,0,0,0,0.5/Coffee Machine,0,60,180,0,0.05,0.03/Kitchen
+Room Light,0,720,1080,0,0,0.1;Motion Sensor,0,1,1439,0,0,0.02;Room Ceiling Fan,25,0,0,0,0,0.075;Room Aircon,33,0,0,0,0,0.5;/TV,0,840,1020,0,0,0.04;/Living Room
+Room Light,0,720,1439,0,0,0.1;Motion Sensor,0,1,180,0,0,0.02/Hair Drier,0,120,200,0,0.0,0.1/Bath Room
+Room Light,0,800,1100,0,0,0.1;Motion Sensor,0,1,1439,0,0,0.02/Lamp,0,960,1020,0,0.0,0.03/Bed Room
+Garden Lights,0,720,1100,0,0,0.1;Motion Sensor,0,1,1439,0,0,0.02/Sprinkler,35,0,0,0,0.5,0.005/Garden
+Garage Light,0,720,840,0,0,0.01;Motion Sensor,0,700,900,0,0,0.02;Garage Door,0,720,760,0,0,0.02/Car,0,700,820,0,0,0.5/Garage

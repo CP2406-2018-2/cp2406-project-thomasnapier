@@ -5,6 +5,21 @@ public class House {
     private double total;
     private double electricityTotal;
     private double waterTotal;
+    final double COST_PER_KWH = 0.025; //0.25c per minute
+    final double COST_PER_LITRE = 0.0294;
+
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public void setElectricityTotal(double electricityTotal) {
+        this.electricityTotal = electricityTotal;
+    }
+
+    public void setWaterTotal(double waterTotal) {
+        this.waterTotal = waterTotal;
+    }
 
     public House(){
         sunlight = 0;
@@ -29,6 +44,30 @@ public class House {
 
     public void setTime(int time){
         this.time = time;
+    }
+
+    public void calculateTotal(){
+        this.total = this.electricityTotal + this.waterTotal;
+    }
+
+    public void calculateWaterTotal(){
+        this.waterTotal *= COST_PER_LITRE;
+    }
+
+    public void calculateElectricityTotal(){
+        this.electricityTotal *= COST_PER_KWH;
+    }
+
+    public double getWaterTotal(){
+        return waterTotal;
+    }
+
+    public double getElectricityTotal(){
+        return electricityTotal;
+    }
+
+    public double getTotal(){
+        return total;
     }
 
     //display contents for each room in the house
@@ -66,32 +105,21 @@ public class House {
             Fixture[] fixtures = room.getRoomFixtures();
             Appliance[] appliances = room.getRoomAppliances();
             for (Appliance appliance : appliances) {
-                if (appliance.getState().equals("")) {
+                if (!appliance.getState()) {
                 } else {
-                    System.out.print(" **" + appliance.getState() + "** ");
-                    this.electricityTotal = appliance.calculateEnergyUsage();
-                    this.waterTotal = appliance.calculateWaterUsage();
+                    this.electricityTotal += appliance.getEnergyUsage() * COST_PER_KWH;
+                    this.waterTotal += appliance.getWaterUsage() * COST_PER_LITRE;
+                    this.total += this.electricityTotal + this.waterTotal;
                 }
             }
             for (Fixture fixture : fixtures) {
-                if (fixture.getState().equals("")) {
+                if (!fixture.getState()) {
                 } else {
-                    System.out.print(" **" + fixture.getState() + "** ");
-                    this.electricityTotal = fixture.calculateEnergyUsage();
-                    this.waterTotal += fixture.calculateWaterUsage();
+                    this.electricityTotal += fixture.getEnergyUsage() * COST_PER_KWH;
+                    this.waterTotal += fixture.getWaterUsage() * COST_PER_LITRE;
+                    this.total = this.electricityTotal + this.waterTotal;
                 }
             }
         }
-    }
-
-
-    public void displayTotals(double electricityCost, double waterCost){
-        int random = (int) (Math.random() * 5 + 1);
-        this.electricityTotal += random;
-        this.electricityTotal *= electricityCost;
-        this.waterTotal *= waterCost;
-        this.total = this.electricityTotal + this.waterTotal;
-        System.out.println("\n\nThe total cost for all appliances and fixtures throughout the day was $" + (float) this.total + ", consisting of $"
-                + (float) this.electricityTotal + " from electricity and $" + (float) this.waterTotal + " from water");
     }
 }
