@@ -25,28 +25,37 @@ A user needs to be able to turn specific appliances and fixtures on and off
 Estimate: 2 hours
 
 ------------------------
-(BUGGY)
+(DONE)
 A user needs to be able to set times for appliances and fixtures to automatically turn on and off.
 
 Estimate: 5 hours
 
 ------------------------
 
-(TODO) 
+(DONE) 
 A user needs to be able to see information about the simulation in the information panel
 
 Estimate: 6 hours
 
 ------------------------
 
-(TODO) 
+(DONE) 
 A user needs to be able to exit the program 
 
 Estimate: 1 hour
 
 -------------------------
 
-(TODO)
+(DONE)
 A user needs to be able to find out information about the program and a user guide
 
 Estimate: 1 hour
+
+-------------------------
+
+(TODO) 
+A user needs to be able to change the speed of the simulation on the fly 
+
+Estimate: 2 hours
+
+-------------------------
