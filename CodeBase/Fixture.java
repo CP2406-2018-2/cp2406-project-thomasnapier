@@ -13,7 +13,6 @@ public class Fixture {
     private double totalEnergyUsage = 0;
     private double totalWaterUsage = 0;
 
-
     public void setTotalEnergyUsage(double totalEnergyUsage) {
         this.totalEnergyUsage = totalEnergyUsage;
     }
@@ -21,7 +20,6 @@ public class Fixture {
     public void setTotalWaterUsage(double totalWaterUsage) {
         this.totalWaterUsage = totalWaterUsage;
     }
-
 
     public Fixture(String name, int temperatureCutOff, int lowerTimeCutOff, int upperTimeCutOff, int lightCutOff, double water, double energy){
         this.name = name;
@@ -82,50 +80,12 @@ public class Fixture {
         this.sunlight = sunlight;
     }
 
-    public int getSunlight(){
-        return sunlight;
-    }
-
-    public int getTime(){
-        return time;
-    }
-
-    public int getTemperature(){
-        return temperature;
-    }
-
-    public int getTemperatureCutOff(){
-        return temperatureCutOff;
-    }
-
-    public int getLightCutOff(){
-        return lightCutOff;
-    }
-
-    public void setEnergyUsage(double energy){
-        this.energyUsage = energy;
-    }
-
-    public void setWaterUsage(double water){
-        this.waterUsage = water;
-    }
-
     public double getEnergyUsage(){
         return this.energyUsage;
     }
 
     public double getWaterUsage(){
         return this.waterUsage;
-    }
-
-    public double calculateEnergyUsage(){
-        this.totalEnergyUsage += this.energyUsage;
-        return this.totalEnergyUsage;
-    }
-
-    public double calculateWaterUsage(){
-        this.totalWaterUsage += this.waterUsage;
-        return this.totalWaterUsage;
     }
 
 }

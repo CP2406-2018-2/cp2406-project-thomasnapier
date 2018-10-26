@@ -42,20 +42,12 @@ public class Room {
         this.sunlight = sunlight;
     }
 
-    public int getSunlight() {
-        return sunlight;
-    }
-
     public void setTime(int time) {
         this.time = time;
     }
 
     public void setTemperature(int temperature) {
         this.temperature = temperature;
-    }
-
-    public int getTemperature(){
-        return this.temperature;
     }
 
     public void setRoomDevices(){

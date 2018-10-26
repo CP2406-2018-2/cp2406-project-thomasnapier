@@ -26,16 +26,8 @@ public class House {
         temperature = 0;
     }
 
-    public int getTemperature() {
-        return temperature;
-    }
-
     public void setTemperature(int temperature) {
         this.temperature = temperature;
-    }
-
-    public int getSunlight() {
-        return sunlight;
     }
 
     public void setSunlight(int sunlight) {
@@ -44,18 +36,6 @@ public class House {
 
     public void setTime(int time){
         this.time = time;
-    }
-
-    public void calculateTotal(){
-        this.total = this.electricityTotal + this.waterTotal;
-    }
-
-    public void calculateWaterTotal(){
-        this.waterTotal *= COST_PER_LITRE;
-    }
-
-    public void calculateElectricityTotal(){
-        this.electricityTotal *= COST_PER_KWH;
     }
 
     public double getWaterTotal(){
@@ -68,36 +48,6 @@ public class House {
 
     public double getTotal(){
         return total;
-    }
-
-    //display contents for each room in the house
-    public static void displayContents(Room[] rooms){
-        for (Room room : rooms) {
-            Fixture[] fixtures = room.getRoomFixtures();
-            Appliance[] appliances = room.getRoomAppliances();
-            System.out.println("The contents of the " + room.getRoomName() + " are:");
-            System.out.println("Appliances: ");
-            StringBuilder appString = new StringBuilder();
-            for (int j = 0; j < appliances.length; j++) {
-                if (j == 0) {
-                    appString.append(appliances[j].getName());
-                } else {
-                    appString.append(", ").append(appliances[j].getName());
-                }
-            }
-            System.out.println(appString);
-            System.out.println("\nFixtures: ");
-            StringBuilder fixString = new StringBuilder();
-            for (int j = 0; j < fixtures.length; j++) {
-                if (j == 0) {
-                    fixString.append(fixtures[j].getName());
-                } else {
-                    fixString.append(", ").append(fixtures[j].getName());
-                }
-            }
-            System.out.println(fixString);
-            System.out.println("-------------------------");
-        }
     }
 
     public void displayStates(Room[] rooms){
@@ -119,6 +69,25 @@ public class House {
                     this.waterTotal += fixture.getWaterUsage() * COST_PER_LITRE;
                     this.total = this.electricityTotal + this.waterTotal;
                 }
+            }
+        }
+    }
+
+    public void resetRoomValues(Room[] rooms){
+        for (Room room : rooms) {
+            room.setSunlight(0);
+            room.setTime(0);
+            room.setTemperature(0);
+            room.setRoomDevices();
+            Fixture[] fixtures = room.getRoomFixtures();
+            Appliance[] appliances = room.getRoomAppliances();
+            for (int i = 0; i < fixtures.length; i++) {
+                fixtures[i].setTotalWaterUsage(0);
+                fixtures[i].setTotalEnergyUsage(0);
+            }
+            for (int i = 0; i < appliances.length; i++) {
+                appliances[i].setTotalEnergyUsage(0);
+                appliances[i].setTotalWaterUsage(0);
             }
         }
     }

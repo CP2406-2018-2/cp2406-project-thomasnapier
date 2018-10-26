@@ -68,6 +68,8 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
     House house = new House();
 
     boolean isCorrectFile = false;
+    boolean hasSelectedFile = false;
+
     public JSimulatorFrame(){
         setTitle("Smart Home Simulator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,12 +106,12 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
         add(informationPanel, BorderLayout.WEST);
         informationPanel.setLayout(new GridLayout(8, 1));
         informationPanel.add(informationTitle);
+        informationPanel.add(eventField);
         informationPanel.add(timeField);
         informationPanel.add(temperatureField);
         informationPanel.add(lightField);
         informationPanel.add(electricityTotalField);
         informationPanel.add(waterTotalField);
-        informationPanel.add(eventField);
         informationPanel.add(totalField);
         informationPanel.setPreferredSize(new Dimension(300, 600));
         informationPanel.setVisible(true);
@@ -158,97 +160,105 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
             System.exit(0);
         }
         else if(source == loadConfig){
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-            int result = fileChooser.showOpenDialog(this);
-            if(result == JFileChooser.APPROVE_OPTION){
-                File selectedFile = fileChooser.getSelectedFile();
-                statusLabel.setText(selectedFile + " loaded successfully");
-                statusPanel.setBackground(Color.GREEN);
-                //load all appliance, fixtures, rooms and properties from a configuration file
-                try {
-                    if(selectedFile.getName().equals("configurations.txt")){
-                        isCorrectFile = true;
-                        scanner = new Scanner(selectedFile);
-                        while(scanner.hasNextLine()){
-                            String total[] = scanner.nextLine().split("/");
-                            for (int i = 0; i < total.length; i++) {
-                                if(i == 0){
-                                    String data[] = total[i].split(";"); //separate individual fixtures
-                                    for (int j = 0; j < data.length; j++) {
-                                        String individual[] = data[j].split(","); //separate individual fixture values
-                                        fixList.add(new Fixture(individual[0], Integer.parseInt(individual[1]),
-                                                Integer.parseInt(individual[2]), Integer.parseInt(individual[3]),
-                                                Integer.parseInt(individual[4]), Double.parseDouble(individual[5]),
-                                                Double.parseDouble(individual[6])));
-                                    }
-                                }
-                                else{
-                                    if(i == 1){
-                                        String data[] = total[i].split(";"); //separate individual appliances
-                                        for (int j = 0; j < data.length; j++) {
-                                            String individual[] = data[j].split(","); //separate individual appliance values
-                                            appList.add(new Appliance(individual[0], Integer.valueOf(individual[1]),
-                                                    Integer.valueOf(individual[2]), Integer.valueOf(individual[3]),
-                                                    Integer.valueOf(individual[4]), Double.valueOf(individual[5]),
-                                                    Double.valueOf(individual[6])));
+            if(!hasSelectedFile){
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                int result = fileChooser.showOpenDialog(this);
+                if(result == JFileChooser.APPROVE_OPTION){
+                    File selectedFile = fileChooser.getSelectedFile();
+                    statusLabel.setText(selectedFile + " loaded successfully");
+                    statusPanel.setBackground(Color.GREEN);
+                    //load all appliance, fixtures, rooms and properties from a configuration file
+                    try {
+                        if(selectedFile.getName().equals("configurations.txt")){
+                            isCorrectFile = true;
+                            hasSelectedFile = true;
+                            scanner = new Scanner(selectedFile);
+                            while(scanner.hasNextLine()){
+                                String total[] = scanner.nextLine().split("/");
+                                for (int i = 0; i < total.length; i++) {
+                                    if(i == 0){
+                                        String data[] = total[i].split(";"); //separate individual fixtures
+                                        for (String aData : data) {
+                                            String individual[] = aData.split(","); //separate individual fixture values
+                                            fixList.add(new Fixture(individual[0], Integer.parseInt(individual[1]),
+                                                    Integer.parseInt(individual[2]), Integer.parseInt(individual[3]),
+                                                    Integer.parseInt(individual[4]), Double.parseDouble(individual[5]),
+                                                    Double.parseDouble(individual[6])));
                                         }
                                     }
                                     else{
-                                        roomName = total[2];
+                                        if(i == 1){
+                                            String data[] = total[i].split(";"); //separate individual appliances
+                                            for (String aData : data) {
+                                                String individual[] = aData.split(","); //separate individual appliance values
+                                                appList.add(new Appliance(individual[0], Integer.valueOf(individual[1]),
+                                                        Integer.valueOf(individual[2]), Integer.valueOf(individual[3]),
+                                                        Integer.valueOf(individual[4]), Double.valueOf(individual[5]),
+                                                        Double.valueOf(individual[6])));
+                                            }
+                                        }
+                                        else{
+                                            roomName = total[2];
+                                        }
                                     }
                                 }
+                                Fixture[] tempFixtures = new Fixture[fixList.size()];
+                                tempFixtures = fixList.toArray(tempFixtures);
+                                Appliance[] tempAppliances = new Appliance[appList.size()];
+                                tempAppliances = appList.toArray(tempAppliances);
+                                roomList.add(new Room(roomName, tempFixtures, tempAppliances));
+                                fixList = new ArrayList<>();
+                                appList = new ArrayList<>();
                             }
-                            Fixture[] tempFixtures = new Fixture[fixList.size()];
-                            tempFixtures = fixList.toArray(tempFixtures);
-                            Appliance[] tempAppliances = new Appliance[appList.size()];
-                            tempAppliances = appList.toArray(tempAppliances);
-                            roomList.add(new Room(roomName, tempFixtures, tempAppliances));
-                            fixList = new ArrayList<>();
-                            appList = new ArrayList<>();
+                            scanner.close();
+                            rooms = roomList.toArray(rooms);
+                            //create simulation window components dynamically
+                            simulationPanel.setLayout(new GridLayout(2, 3));
+                            JPanel[] roomPanels = new JPanel[rooms.length];
+                            JLabel[] roomLabels = new JLabel[rooms.length];
+                            for (int i = 0; i < rooms.length; i++) {
+                                roomPanels[i] = new JPanel();
+                                simulationPanel.add(roomPanels[i]);
+                                roomPanels[i].setLayout(new GridLayout(7, 1));
+                                roomLabels[i] = new JLabel();
+                                roomLabels[i].setFont(titleFont);
+                                roomPanels[i].add(roomLabels[i]);
+                                roomLabels[i].setHorizontalAlignment(JLabel.CENTER);
+                                roomLabels[i].setText(rooms[i].getRoomName());
+                                roomPanels[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                                Fixture[] fixtures = rooms[i].getRoomFixtures();
+                                Appliance[] appliances = rooms[i].getRoomAppliances();
+                                JLabel[] fixtureLabels = new JLabel[fixtures.length];
+                                JLabel[] applianceLabels = new JLabel[appliances.length];
+                                for (int j = 0; j < fixtures.length; j++) {
+                                    fixtureLabels[j] = new JLabel("" + fixtures[j].getName());
+                                    fixtureLabels[j].setHorizontalAlignment(JLabel.CENTER);
+                                    fixtureLabels[j].setFont(informationFont);
+                                    roomPanels[i].add(fixtureLabels[j]);
+                                }
+                                for (int j = 0; j < appliances.length; j++) {
+                                    applianceLabels[j] = new JLabel("" + appliances[j].getName());
+                                    applianceLabels[j].setHorizontalAlignment(JLabel.CENTER);
+                                    applianceLabels[j].setFont(informationFont);
+                                    roomPanels[i].add(applianceLabels[j]);
+                                }
+                            }
                         }
-                        scanner.close();
-                        rooms = roomList.toArray(rooms);
-                        simulationPanel.setLayout(new GridLayout(2, 3));
-                        JPanel[] roomPanels = new JPanel[rooms.length];
-                        JLabel[] roomLabels = new JLabel[rooms.length];
-                        for (int i = 0; i < rooms.length; i++) {
-                            roomPanels[i] = new JPanel();
-                            simulationPanel.add(roomPanels[i]);
-                            roomPanels[i].setLayout(new GridLayout(7, 1));
-                            roomLabels[i] = new JLabel();
-                            roomLabels[i].setFont(titleFont);
-                            roomPanels[i].add(roomLabels[i]);
-                            roomLabels[i].setHorizontalAlignment(JLabel.CENTER);
-                            roomLabels[i].setText(rooms[i].getRoomName());
-                            roomPanels[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                            Fixture[] fixtures = rooms[i].getRoomFixtures();
-                            Appliance[] appliances = rooms[i].getRoomAppliances();
-                            JLabel[] fixtureLabels = new JLabel[fixtures.length];
-                            JLabel[] applianceLabels = new JLabel[appliances.length];
-                            for (int j = 0; j < fixtures.length; j++) {
-                                fixtureLabels[j] = new JLabel("" + fixtures[j].getName());
-                                fixtureLabels[j].setHorizontalAlignment(JLabel.CENTER);
-                                fixtureLabels[j].setFont(informationFont);
-                                roomPanels[i].add(fixtureLabels[j]);
-                            }
-                            for (int j = 0; j < appliances.length; j++) {
-                                applianceLabels[j] = new JLabel("" + appliances[j].getName());
-                                applianceLabels[j].setHorizontalAlignment(JLabel.CENTER);
-                                applianceLabels[j].setFont(informationFont);
-                                roomPanels[i].add(applianceLabels[j]);
-                            }
+                        else{
+                            isCorrectFile = false;
+                            statusLabel.setText("You have not selected a valid configuration file");
+                            statusPanel.setBackground(Color.RED);
                         }
                     }
-                    else{
-                        isCorrectFile = false;
-                        statusLabel.setText("You have not selected a valid configuration file");
-                        statusPanel.setBackground(Color.RED);
+                    catch (FileNotFoundException e) {
+                        e.printStackTrace();
                     }
                 }
-                catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+            }
+            else{
+                statusLabel.setText("Unable to load file because you have already loaded one");
+                statusPanel.setBackground(Color.RED);
             }
         }
         else if(source == showHideInformation){
@@ -274,10 +284,12 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
         else if(source == stop){
             timer.stop();
             statusLabel.setText("Simulation has Stopped");
+            eventField.setBackground(UIManager.getColor("Panel.background"));
+            //reset simulation values to initial
             currentTime = 0;
             currentSunlight = 0;
             currentTemperature = 0;
-            hours = 5; //starts at 5:00am
+            hours = 5;
             minutes = 0;
             halfDays = 0;
             eventTemperature = 0;
@@ -287,22 +299,7 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
             house.setElectricityTotal(0);
             house.setWaterTotal(0);
             house.setTotal(0);
-            for (Room room : rooms) {
-                room.setSunlight(currentSunlight);
-                room.setTime(currentTime);
-                room.setTemperature(currentTemperature);
-                room.setRoomDevices();
-                Fixture[] fixtures = room.getRoomFixtures();
-                Appliance[] appliances = room.getRoomAppliances();
-                for (int i = 0; i < fixtures.length; i++) {
-                    fixtures[i].setTotalWaterUsage(0);
-                    fixtures[i].setTotalEnergyUsage(0);
-                }
-                for (int i = 0; i < appliances.length; i++) {
-                    appliances[i].setTotalEnergyUsage(0);
-                    appliances[i].setTotalWaterUsage(0);
-                }
-            }
+            house.resetRoomValues(rooms);
         }
         else if (source == about){
             JOptionPane.showMessageDialog(null, "Smart Home Simulator v1.0.0 by Thomas Napier");
@@ -350,43 +347,7 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
                         }
                     }
                     if (eventTemperature == 0) { //if no event has triggered
-                        int randomNumber;
-                        randomNumber = (int) (Math.random() * ((1000 - 1)) + 1) + 1;
-                        int temperature = 0;
-                        String eventString = "";
-                        if (randomNumber >= 500) { //50% chance
-                            if(randomNumber == 500){
-                                eventString = "It has started to rain";
-                                temperature = -3;
-                                eventTemperature = temperature;
-                            }
-                            else if(randomNumber == 600){
-                                eventString = "It has started to hail";
-                                temperature = -7;
-                                eventTemperature = temperature;
-                            }
-                            else if(randomNumber == 700){
-                                eventString = "A lightning storm has begun";
-                                temperature = -5;
-                                eventTemperature = temperature;
-                            }
-                            else if (randomNumber == 800){
-                                eventString = "Strong winds have begun";
-                                temperature = -3;
-                                eventTemperature = temperature;
-                            }
-                            else if (randomNumber == 900){
-                                eventString = "A heat wave has begun";
-                                temperature = 10;
-                                eventTemperature = temperature;
-                            }
-                            else if (randomNumber == 1000){
-                                eventString = "A cold snap has begun";
-                                temperature = -10;
-                                eventTemperature = temperature;
-                            }
-                            eventField.setText("Event Status: " + eventString);
-                        }
+                        generateEvent();
                     }
                     if (currentTime >= START_TIME && currentTime <= 420) { //reach max temperature at 12
                         currentTemperature = (MIN_TEMPERATURE + (currentTime / HEATING_RATE));
@@ -494,6 +455,51 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
         }
     }
 
+    private void generateEvent() {
+        int randomNumber;
+        randomNumber = (int) (Math.random() * ((1000 - 1)) + 1) + 1;
+        int temperature;
+        String eventString = "";
+        if (randomNumber >= 500) { //50% chance
+            if(randomNumber == 500){
+                eventString = "It has started to rain";
+                temperature = -3;
+                eventTemperature = temperature;
+                eventField.setBackground(Color.LIGHT_GRAY);
+            }
+            else if(randomNumber == 600){
+                eventString = "It has started to hail";
+                temperature = -7;
+                eventTemperature = temperature;
+                eventField.setBackground(Color.GRAY);
+            }
+            else if(randomNumber == 700){
+                eventString = "A lightning storm has begun";
+                temperature = -5;
+                eventTemperature = temperature;
+                eventField.setBackground(Color.GRAY);
+            }
+            else if (randomNumber == 800){
+                eventString = "Strong winds have begun";
+                temperature = -3;
+                eventTemperature = temperature;
+                eventField.setBackground(Color.LIGHT_GRAY);
+            }
+            else if (randomNumber == 900){
+                eventString = "A heat wave has begun";
+                temperature = 10;
+                eventTemperature = temperature;
+                eventField.setBackground(Color.ORANGE);
+            }
+            else if (randomNumber == 1000){
+                eventString = "A cold snap has begun";
+                temperature = -10;
+                eventTemperature = temperature;
+                eventField.setBackground(Color.cyan);
+            }
+            eventField.setText("Event Status: " + eventString);
+        }
+    }
 
     public static void main(String[] args) {
         JSimulatorFrame simulatorFrame = new JSimulatorFrame();
