@@ -13,6 +13,7 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
     JMenuItem exit = new JMenuItem("Exit");
     JMenu simulation = new JMenu("Simulation");
     JMenuItem showHideInformation = new JMenuItem("Show/Hide Information");
+    JMenuItem setSpeed = new JMenuItem("Set Speed");
     JMenuItem run = new JMenuItem("Run");
     JMenuItem pause = new JMenuItem("Pause");
     JMenuItem stop = new JMenuItem("Stop");
@@ -35,10 +36,16 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
     JTextField totalField = new JTextField();
     JTextField eventField = new JTextField();
 
-    Font titleFont = new Font("Arial", Font.BOLD, 20);
+    Font titleFont = new Font("Arial", Font.BOLD, 22);
     Font informationFont = new Font("Arial", Font.PLAIN, 16);
+    Font deviceFont = new Font("Arial", Font.BOLD, 16);
 
-    Timer timer = new Timer(10, this::timerOneMethod); //create new timer and assign it a new action event handler
+    final Color LIGHT_YELLOW = new Color(255, 255, 102);
+    final Color SUNLIGHT = new Color(255, 255, 255);
+    int sunlightCount = 255;
+
+    int delay = 100;
+    Timer timer = new Timer(delay, this::timerOneMethod); //create new timer and assign it a new action event handler
     boolean isPaused = false;
 
     int currentTime = 0;
@@ -85,6 +92,8 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
         exit.addActionListener(this);
         simulation.add(showHideInformation);
         showHideInformation.addActionListener(this);
+        simulation.add(setSpeed);
+        setSpeed.addActionListener(this);
         simulation.add(run);
         run.addActionListener(this);
         simulation.add(pause);
@@ -113,6 +122,8 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
         informationPanel.add(electricityTotalField);
         informationPanel.add(waterTotalField);
         informationPanel.add(totalField);
+        informationPanel.setBackground(Color.WHITE);
+        informationPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         informationPanel.setPreferredSize(new Dimension(300, 600));
         informationPanel.setVisible(true);
         informationTitle.setFont(titleFont);
@@ -122,44 +133,53 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
         timeField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         timeField.setHorizontalAlignment(JTextField.CENTER);
         timeField.setEditable(false);
+        timeField.setBackground(Color.WHITE);
 
         temperatureField.setFont(informationFont);
         temperatureField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         temperatureField.setHorizontalAlignment(JTextField.CENTER);
         temperatureField.setEditable(false);
+        temperatureField.setBackground(Color.WHITE);
 
         lightField.setFont(informationFont);
         lightField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         lightField.setHorizontalAlignment(JTextField.CENTER);
         lightField.setEditable(false);
+        lightField.setBackground(Color.WHITE);
 
         electricityTotalField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         electricityTotalField.setFont(informationFont);
         electricityTotalField.setHorizontalAlignment(JTextField.CENTER);
         electricityTotalField.setEditable(false);
+        electricityTotalField.setBackground(Color.WHITE);
 
         waterTotalField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         waterTotalField.setFont(informationFont);
         waterTotalField.setHorizontalAlignment(JTextField.CENTER);
         waterTotalField.setEditable(false);
+        waterTotalField.setBackground(Color.WHITE);
 
         eventField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         eventField.setFont(informationFont);
         eventField.setHorizontalAlignment(JTextField.CENTER);
         eventField.setEditable(false);
+        eventField.setBackground(Color.WHITE);
 
         totalField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         totalField.setFont(informationFont);
         totalField.setHorizontalAlignment(JTextField.CENTER);
         totalField.setEditable(false);
+        totalField.setBackground(Color.WHITE);
     }
 
     public void actionPerformed(ActionEvent event){
         Object source = event.getSource();
         if(source == exit){
+            System.out.println("Exiting program"); //testing exit button
             System.exit(0);
         }
         else if(source == loadConfig){
+            System.out.println("Loading file"); //testing load file button
             if(!hasSelectedFile){
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -173,6 +193,7 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
                         if(selectedFile.getName().equals("configurations.txt")){
                             isCorrectFile = true;
                             hasSelectedFile = true;
+                            System.out.println("File Loaded"); //testing file loading
                             scanner = new Scanner(selectedFile);
                             while(scanner.hasNextLine()){
                                 String total[] = scanner.nextLine().split("/");
@@ -218,10 +239,12 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
                             JPanel[] roomPanels = new JPanel[rooms.length];
                             JLabel[] roomLabels = new JLabel[rooms.length];
                             for (int i = 0; i < rooms.length; i++) {
+                                System.out.println("Creating Room Panels"); //testing room panel creation
                                 roomPanels[i] = new JPanel();
                                 simulationPanel.add(roomPanels[i]);
                                 roomPanels[i].setLayout(new GridLayout(7, 1));
                                 roomLabels[i] = new JLabel();
+                                System.out.println("Creating Room Labels"); //testing room label creation
                                 roomLabels[i].setFont(titleFont);
                                 roomPanels[i].add(roomLabels[i]);
                                 roomLabels[i].setHorizontalAlignment(JLabel.CENTER);
@@ -234,13 +257,13 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
                                 for (int j = 0; j < fixtures.length; j++) {
                                     fixtureLabels[j] = new JLabel("" + fixtures[j].getName());
                                     fixtureLabels[j].setHorizontalAlignment(JLabel.CENTER);
-                                    fixtureLabels[j].setFont(informationFont);
+                                    fixtureLabels[j].setFont(deviceFont);
                                     roomPanels[i].add(fixtureLabels[j]);
                                 }
                                 for (int j = 0; j < appliances.length; j++) {
                                     applianceLabels[j] = new JLabel("" + appliances[j].getName());
                                     applianceLabels[j].setHorizontalAlignment(JLabel.CENTER);
-                                    applianceLabels[j].setFont(informationFont);
+                                    applianceLabels[j].setFont(deviceFont);
                                     roomPanels[i].add(applianceLabels[j]);
                                 }
                             }
@@ -249,6 +272,7 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
                             isCorrectFile = false;
                             statusLabel.setText("You have not selected a valid configuration file");
                             statusPanel.setBackground(Color.RED);
+                            System.out.println("Wrong file selected"); //testing file selection
                         }
                     }
                     catch (FileNotFoundException e) {
@@ -259,17 +283,21 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
             else{
                 statusLabel.setText("Unable to load file because you have already loaded one");
                 statusPanel.setBackground(Color.RED);
+                System.out.println("File already loaded"); //testing file already loaded
             }
         }
         else if(source == showHideInformation){
             if(informationPanel.isVisible()){
                 informationPanel.setVisible(false);
+                System.out.println("Hide Panel"); //testing hiding
             }
             else{
                 informationPanel.setVisible(true);
+                System.out.println("Show Panel"); //testing showing
             }
         }
         else if(source == run){
+            System.out.println("Running"); //testing running button
             isPaused = false;
             if (isCorrectFile){
                 statusLabel.setText("");
@@ -278,10 +306,12 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
             }
         }
         else if(source == pause){
+            System.out.println("Paused"); //testing pause button
             isPaused = true;
             statusLabel.setText("Simulation is Paused");
         }
         else if(source == stop){
+            System.out.println("Stopped"); //testing stop button
             timer.stop();
             statusLabel.setText("Simulation has Stopped");
             eventField.setBackground(UIManager.getColor("Panel.background"));
@@ -302,9 +332,11 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
             house.resetRoomValues(rooms);
         }
         else if (source == about){
+            System.out.println("About"); //testing about
             JOptionPane.showMessageDialog(null, "Smart Home Simulator v1.0.0 by Thomas Napier");
         }
         else if (source == userGuide){
+            System.out.println("User guide"); //testing user guide
             JOptionPane.showMessageDialog(null, "----- User Guide -----" +
                     "\n\n\b LOADING CONFIGURATIONS: " +
                     "\n To start the simulation, please go to File > Load Configuration and browse for configurations.txt that came with the software" +
@@ -320,6 +352,20 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
                     "\n\n\b EXIT THE SOFTWARE: " +
                     "\n To exit the program, simply hit the x in the top right of the window or go to File > Exit. This will not alter the house's configuration settings");
         }
+        else if (source == setSpeed){
+            String userInput = JOptionPane.showInputDialog(null, "Set Simulator Speed" +
+                    "\n Fast - 10" +
+                    "\n Medium - 100" +
+                    "\n Slow - 1000");
+            if(userInput == null){ //if user hits cancel
+                System.out.println("Cancel was hit - Speed remains the same"); //testing cancel button on speed setter
+            }
+            else{
+                delay = Integer.parseInt(userInput);
+                System.out.println("Speed set to " + delay);
+                timer.setDelay(delay);
+            }
+        }
         invalidate();
         validate();
     }
@@ -330,6 +376,7 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
                 if (currentTime < END_TIME) {
                     if (currentTime >= START_TIME && currentTime <= 120) { //reach max sunlight at 7:00am
                         if (currentSunlight < MAX_SUNLIGHT) {
+                            sunlightCount-=2;
                             house.setSunlight(currentSunlight);
                             for (Room room : rooms) {
                                 room.setSunlight(currentSunlight);
@@ -339,6 +386,7 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
                     }
                     if (currentTime > 720 && currentTime < 840) { //reach min sunlight at 7pm
                         if (currentSunlight > MIN_SUNLIGHT) {
+                            sunlightCount+=2;
                             house.setSunlight(currentSunlight);
                             for (Room room : rooms) {
                                 room.setSunlight(currentSunlight);
@@ -358,6 +406,7 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
                         currentTemperature += eventTemperature;
                     }
                     String lightOutput = "Light: " + currentSunlight + "%";
+                    lightField.setBackground(new Color(255, 255, sunlightCount));
                     String temperatureOutput = "Temp: " + currentTemperature + "°C";
                     if (currentTime % 60 == 0 && currentTime != START_TIME) {
                         if (hours == 11) {
@@ -418,9 +467,12 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
                         for (int j = 0; j < fixtures.length; j++) {
                             fixtureLabels[j] = new JLabel("" + fixtures[j].getName());
                             fixtureLabels[j].setHorizontalAlignment(JLabel.CENTER);
-                            fixtureLabels[j].setFont(informationFont);
+                            fixtureLabels[j].setFont(deviceFont);
                             roomPanels[i].add(fixtureLabels[j]);
                             if(fixtures[j].getState()){
+                                if(fixtures[j].getName().equals("Room Light")){
+                                    roomPanels[i].setBackground(LIGHT_YELLOW);
+                                }
                                 fixtureLabels[j].setForeground(Color.GREEN);
                             }
                             else{
@@ -430,7 +482,7 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
                         for (int j = 0; j < appliances.length; j++) {
                             applianceLabels[j] = new JLabel("" + appliances[j].getName());
                             applianceLabels[j].setHorizontalAlignment(JLabel.CENTER);
-                            applianceLabels[j].setFont(informationFont);
+                            applianceLabels[j].setFont(deviceFont);
                             roomPanels[i].add(applianceLabels[j]);
                             if(appliances[j].getState()){
                                 applianceLabels[j].setForeground(Color.GREEN);
@@ -498,6 +550,7 @@ public class JSimulatorFrame extends JFrame implements ActionListener{
                 eventField.setBackground(Color.cyan);
             }
             eventField.setText("Event Status: " + eventString);
+            System.out.println("Event has started: " + eventString);
         }
     }
 
