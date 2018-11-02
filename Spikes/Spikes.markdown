@@ -63,7 +63,7 @@ Estimate: 1 day
 
 ------------------------
 
-(TODO)
+(DONE)
 A user needs to be able to visually see the room light up when the lights turn on
 
 Estimate: 2 hours
