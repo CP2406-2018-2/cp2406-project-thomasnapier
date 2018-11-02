@@ -53,7 +53,7 @@ Estimate: 1 hour
 
 -------------------------
 
-(TODO) 
+(DONE) 
 A user needs to be able to change the speed of the simulation on the fly 
 
 Estimate: 2 hours
